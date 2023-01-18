@@ -41,15 +41,15 @@ pipeline {
 
 		
 
-		stage('Run publish to nexus pipeline') { //ZGVtby11c2VyOmFkbWluMTIz
+		stage('Run publish to nexus pipeline') { //
     		steps {
 				container('node') {
 					sh "echo hello"
 					sh '''
-					npm set https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=NpmToken.a1d021b2-5162-3001-b98c-98b7290ad598
+					npm set https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=NpmToken.xyz
 					npm config list
-					npm login --registry https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=ZGVtby11c2VyOmFkbWluMTIz --auth-type=legacy
-					npm publish  --registry https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=NpmToken.a1d021b2-5162-3001-b98c-98b7290ad598
+					npm login --registry https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=xyz --auth-type=legacy
+					npm publish  --registry https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=NpmToken.xyz
 					'''
 					
 				}
