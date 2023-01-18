@@ -36,7 +36,7 @@ pipeline {
 
 		
 
-		stage('Run publish to nexus pipeline') { //ZGVtby11c2VyOmFkbWluMTIz
+		stage('Run publish to nexus pipeline') {
     		steps {
 				container('node') {
 					sh "echo hello"
