@@ -42,7 +42,7 @@ pipeline {
 					
 					sh '''
 					# npm login --registry http://3.128.255.192:8081/repository/npm-private/ --auth-type=legacy
-					npm publish  --registry http://3.128.255.192:8081/repository/npm-private/
+					# npm publish  --registry http://3.128.255.192:8081/repository/npm-private/
 					'''
 				}
     		
