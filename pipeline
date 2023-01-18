@@ -1,0 +1,88 @@
+pipeline {
+	agent {
+		kubernetes {
+			
+			idleMinutes 10  // how long the pod will live after no jobs have run on it
+			yamlFile 'build-pod-node.yaml'  // path to the pod definition relative to the root of our project 
+			
+    	}
+
+  	}
+	environment{
+	  	
+		VAR_BRANCH_NAME = "${env.BRANCH_NAME}"
+	  	REGISTRY = "git.qeema.io:5050"
+    	REPOSITORY = "qeema-platform/demo-repo-node"
+        TAG="${env.BUILD_NUMBER}"
+        IMAGE="demo_repo_node"
+
+	
+
+	}
+
+	stages {
+
+		stage('Prepare/Checkout') { // for display purposes
+			steps {
+				container('git') {
+			    withCredentials([gitUsernamePassword(credentialsId: 'gitlab-cred')]) {
+  				sh 'git clone  https://git.qeema.io/qeema-platform/pipeline-automation.git'
+				sh "ls"
+				}
+				}
+			} 
+		}
+
+		
+    	stage('Run Compile Pipeline') {
+    		steps {
+				container('node') { 		// will call build container based on the repo type
+    			
+				script {
+    				
+					pipelineScripts = load "compileScript-npm.groovy"
+					pipelineScripts.CompileCode()
+    			}
+				
+				}
+    		}
+    	}
+
+		stage('Run sonar pipeline') {
+    		steps {
+				container('docker-cs') {
+    			script {
+    				pipelineScripts = load "pipeline-automation/pipeline.groovy"
+					
+    				pipelineScripts.SonarQubeScan()
+    			}
+				}
+    		}
+    	}
+
+		stage('Run publish to nexus pipeline') { //ZGVtby11c2VyOmFkbWluMTIz
+    		steps {
+				container('node') {
+					sh "echo hello"
+					 sh " npm login --registry=https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/ --scope=@demo-user/"
+					// sh " npm login "
+                    // sh 'npm publish --registry=https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/  '
+
+				}
+    		}
+    	}
+		
+		stage('Run Pipeline for build image') {
+    		steps {
+				container('docker-cs') {
+					script {
+    				pipelineScripts = load "build_container.groovy"
+    				pipelineScripts.buildImage()
+    				}
+
+				}
+    		}
+    	}
+
+	}
+}	
