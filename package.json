@@ -11,7 +11,7 @@
       "express": "^4.16.1"
     },
     "publishConfig": {
-    "registry": "http://3.128.255.192:8081/repository/npm-group/"
+    "registry": "http://3.128.255.192:8081/repository/npm-private/"
     }
     
   
