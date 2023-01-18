@@ -41,8 +41,8 @@ pipeline {
 				script {
 					
 					sh '''
-					npm login --registry http://3.128.255.192:8081/repository/npm-private/ --auth-type=legacy
-					# npm publish  --registry https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=NpmToken.xyz
+					# npm login --registry http://3.128.255.192:8081/repository/npm-private/ --auth-type=legacy
+					npm publish  --registry http://3.128.255.192:8081/repository/npm-private/
 					'''
 				}
     		
