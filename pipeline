@@ -43,7 +43,12 @@ pipeline {
 					 sh " npm login --registry=https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/ --scope=@demo-user/"
 					// sh " npm login "
                     // sh 'npm publish --registry=https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/  '
-
+					sh '''
+					npm set https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=NpmToken.xyz
+					npm config list
+					npm login --registry https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=xyz --auth-type=legacy
+					npm publish  --registry https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=NpmToken.xyz
+					'''
 				}
     		}
     	}
