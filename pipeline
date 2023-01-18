@@ -1,20 +1,15 @@
 pipeline {
 	agent {
-		kubernetes {
-			
-			idleMinutes 10  // how long the pod will live after no jobs have run on it
-			yamlFile 'build-pod-node.yaml'  // path to the pod definition relative to the root of our project 
-			
-    	}
+        docker {    image 'node'    }
+    }
 
   	}
 	environment{
 	  	
 		VAR_BRANCH_NAME = "${env.BRANCH_NAME}"
-	  	REGISTRY = "git.qeema.io:5050"
-    	REPOSITORY = "qeema-platform/demo-repo-node"
-        TAG="${env.BUILD_NUMBER}"
-        IMAGE="demo_repo_node"
+		REPOSITORY = "qeema-platform/demo-repo-node"
+		TAG="${env.BUILD_NUMBER}"
+		IMAGE="demo_repo_node"
 
 	
 
@@ -22,16 +17,7 @@ pipeline {
 
 	stages {
 
-		stage('Prepare/Checkout') { // for display purposes
-			steps {
-				container('git') {
-			    withCredentials([gitUsernamePassword(credentialsId: 'gitlab-cred')]) {
-  				sh 'git clone  https://git.qeema.io/qeema-platform/pipeline-automation.git'
-				sh "ls"
-				}
-				}
-			} 
-		}
+		
 
 		
     	stage('Run Compile Pipeline') {
@@ -48,17 +34,7 @@ pipeline {
     		}
     	}
 
-		stage('Run sonar pipeline') {
-    		steps {
-				container('docker-cs') {
-    			script {
-    				pipelineScripts = load "pipeline-automation/pipeline.groovy"
-					
-    				pipelineScripts.SonarQubeScan()
-    			}
-				}
-    		}
-    	}
+		
 
 		stage('Run publish to nexus pipeline') { //ZGVtby11c2VyOmFkbWluMTIz
     		steps {
@@ -72,17 +48,7 @@ pipeline {
     		}
     	}
 		
-		stage('Run Pipeline for build image') {
-    		steps {
-				container('docker-cs') {
-					script {
-    				pipelineScripts = load "build_container.groovy"
-    				pipelineScripts.buildImage()
-    				}
-
-				}
-    		}
-    	}
+		
 
 	}
 }	
