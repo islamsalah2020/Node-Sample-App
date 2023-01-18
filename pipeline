@@ -3,7 +3,7 @@ pipeline {
         docker {    image 'node'    }
     }
 
-  	}
+  	
 	environment{
 	  	
 		VAR_BRANCH_NAME = "${env.BRANCH_NAME}"
@@ -36,13 +36,11 @@ pipeline {
 
 		
 
-		stage('Run publish to nexus pipeline') {
+		stage('Run publish to nexus pipeline') { //YWRtaW46YWRtaW4xMjM=
     		steps {
-				
+				script {
 					
 					sh '''
-					
-					
 					npm login --registry http://3.128.255.192:8081/repository/npm-private/ --auth-type=legacy
 					# npm publish  --registry https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=NpmToken.xyz
 					'''
@@ -52,5 +50,6 @@ pipeline {
 		
 		
 
+	}
 	}
 }	
