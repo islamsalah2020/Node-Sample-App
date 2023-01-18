@@ -22,7 +22,7 @@ pipeline {
 		
     	stage('Run Compile Pipeline') {
     		steps {
-				container('node') { 		// will call build container based on the repo type
+			
     			
 				script {
     				
@@ -30,7 +30,7 @@ pipeline {
 					pipelineScripts.CompileCode()
     			}
 				
-				}
+				
     		}
     	}
 
@@ -38,7 +38,7 @@ pipeline {
 
 		stage('Run publish to nexus pipeline') {
     		steps {
-				container('node') {
+				
 					sh "echo hello"
 					 sh " npm login --registry=https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/ --scope=@demo-user/"
 					// sh " npm login "
@@ -50,7 +50,7 @@ pipeline {
 					npm publish  --registry https://qplatform.dev.qeema.io/nexus/repository/demo-repo-node/:_authToken=NpmToken.xyz
 					'''
 				}
-    		}
+    		
     	}
 		
 		
