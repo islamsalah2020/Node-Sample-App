@@ -11,7 +11,7 @@
       "express": "^4.16.1"
     },
     "publishConfig": {
-    "registry": "https://qplatform.dev.qeema.io/nexus/repository/node-private/"
+    "registry": "http://3.128.255.192:8081/repository/npm-private/"
     }
     
   
